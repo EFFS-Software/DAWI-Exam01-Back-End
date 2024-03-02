@@ -1,5 +1,6 @@
 import express from 'express';
 const app = express();
+import cors from "cors";
 
 import {marca} from './routes/apiMarca.js';
 import {modelo} from './routes/apiModelo.js';
@@ -12,6 +13,13 @@ import {historialVehiculo} from './routes/apiHistorialVehiculo.js';
 
 const port = 4000;
 app.use(express.json());
+const corsOptions = {
+  origin: 'http://localhost:5173',
+  credential: true,
+  methods: ['POST', 'PUT', 'DELETE', 'GET'],
+  allowedHeaders: ['Content-Type', 'Authorization']
+}
+app.use(cors(corsOptions));
 
 app.use('/api/marca', marca);
 app.use('/api/modelo', modelo);
