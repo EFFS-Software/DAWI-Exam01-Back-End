@@ -1,7 +1,7 @@
 import {db} from '../db/conn.js';
 
 const getMantenimiento = async (req, res)=>{
-  const sql = `select t1.id, t1.fecha, t1.diagnostico, t1.servicio, t1.kilometraje, t1.costos, t1.notas_adicionales, t4.descripcion "Marca", t3.descripcion "Modelo", t2.anio, t2.tipo_combustible, t2.kilometraje, t2.num_puertas, t2.num_asientos from tbl_mantenimiento t1 inner join tbl_vehiculo t2 on t2.id = t1.vehiculo_id inner join tbl_modelo t3 on t3.id = t2.modelo_id inner join tbl_marca t4 on t4.id = t3.marca_id order by t1.id`;
+  const sql = `select t1.id, t1.fecha, t1.diagnostico, t1.servicio, t1.kilometraje, t1.costos, t1.notas_adicionales, t4.descripcion || ' | ' || t3.descripcion || ' | ' || t2.anio || ' | ' || t2.tipo_combustible "vehiculo", t2.num_puertas, t2.num_asientos from tbl_mantenimiento t1 inner join tbl_vehiculo t2 on t2.id = t1.vehiculo_id inner join tbl_modelo t3 on t3.id = t2.modelo_id inner join tbl_marca t4 on t4.id = t3.marca_id order by t1.id`;
   const result = await db.query(sql);
   
   if (result.length === 0) {
@@ -13,7 +13,7 @@ const getMantenimiento = async (req, res)=>{
 
 const getIDMantenimiento = async (req, res)=>{
 	const params = [req.params.id];
-  const sql = `select t1.id, t1.fecha, t1.diagnostico, t1.servicio, t1.kilometraje, t1.costos, t1.notas_adicionales, t4.descripcion "Marca", t3.descripcion "Modelo", t2.anio, t2.tipo_combustible, t2.kilometraje, t2.num_puertas, t2.num_asientos from tbl_mantenimiento t1 inner join tbl_vehiculo t2 on t2.id = t1.vehiculo_id inner join tbl_modelo t3 on t3.id = t2.modelo_id inner join tbl_marca t4 on t4.id = t3.marca_id where t1.id = $1`;
+  const sql = `select t1.id, t1.fecha, t1.diagnostico, t1.servicio, t1.kilometraje, t1.costos, t1.notas_adicionales, t1.vehiculo_id, t2.tipo_combustible, t2.kilometraje, t2.num_puertas, t2.num_asientos from tbl_mantenimiento t1 inner join tbl_vehiculo t2 on t2.id = t1.vehiculo_id inner join tbl_modelo t3 on t3.id = t2.modelo_id inner join tbl_marca t4 on t4.id = t3.marca_id where t1.id = $1`;
   const result = await db.query(sql, params);
   
   if (result.length === 0) {

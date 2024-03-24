@@ -1,7 +1,7 @@
 import {db} from '../db/conn.js';
 
 const getModelo = async (req, res)=>{
-  const sql = `select t1.id, t1.descripcion "Modelo", t2.descripcion "Marca" from tbl_modelo t1 inner join tbl_marca t2 on t2.id = t1.marca_id order by t1.id`;
+  const sql = `select t1.id, t1.descripcion "modelo", t2.descripcion "marca" from tbl_modelo t1 inner join tbl_marca t2 on t2.id = t1.marca_id order by t1.id`;
   const result = await db.query(sql);
   
   res.json(result);
@@ -9,7 +9,7 @@ const getModelo = async (req, res)=>{
 
 const getIDModelo = async (req, res)=>{
 	const params = [req.params.id];
-  const sql = `select t1.id, t1.descripcion "Modelo", t2.descripcion "Marca" from tbl_modelo t1 inner join tbl_marca t2 on t2.id = t1.marca_id where t1.id = $1`;
+  const sql = `select t1.id, t1.descripcion, t1.marca_id, t2.descripcion "marca" from tbl_modelo t1 inner join tbl_marca t2 on t2.id = t1.marca_id where t1.id = $1`;
   const result = await db.query(sql, params);
 
   if (result.length === 0) {
